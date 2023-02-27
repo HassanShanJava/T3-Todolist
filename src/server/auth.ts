@@ -4,10 +4,13 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+// import DiscordProvider from "next-auth/providers/discord";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { env } from "~/env.mjs";
+// import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+
+import EmailProvider from "next-auth/providers/email";
+
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -47,10 +50,33 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER || "https://localhost:3000",
+        port: 587,
+        auth: {
+          user: "apiKey",
+          password: process.env.EMAIL_PASSWORD || "",
+
+        },
+        from: process.env.EMAIL_FROM || "default@default.com",
+        ...(process.env.NODE_ENV !== "production" ? {
+          sendVerificationRequest({ url }) {
+            console.log("LOGIN LINK", url);
+          }
+        } : {})
+
+      }
+    })
+
+    // DiscordProvider({
+    //   clientId: env.DISCORD_CLIENT_ID,
+    //   clientSecret: env.DISCORD_CLIENT_SECRET,
+    // }),
+
+
+    // emailprovider
+
     /**
      * ...add more providers here.
      *
