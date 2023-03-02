@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { todoInput } from "~/types";
+
 import {
   createTRPCRouter,
   // publicProcedure,
@@ -10,19 +12,22 @@ export const todoRouter = createTRPCRouter({
   // we need too belogged in to see this!!
 
   // ctx has prisma, and user session
-  getAllTodos: protectedProcedure.query(async ({ ctx, input }) => {
-    
-    // const todos = await ctx.prisma.todo.findMany({
-    //   where: {
-    //     userId: ctx.session.user.id,
-    //   },
-    // });
 
-    // return todos.map(({ id, text, done }) => ({
-    //   id,
-    //   text,
-    //   done,
-    // }));
+  // get all todos
+  getAllTodos: protectedProcedure.query(async ({ ctx, input }) => {
+    const todos = await ctx.prisma.todo.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+
+    console.log(
+      todos.map(({ id, text, done }) => ({
+        id,
+        text,
+        done,
+      }))
+    );
 
     return [
       {
@@ -42,4 +47,50 @@ export const todoRouter = createTRPCRouter({
       },
     ];
   }),
+
+  // create todo
+  createTodo: protectedProcedure
+    .input(todoInput)
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.todo.create({
+        data: {
+          text: input,
+          user: {
+            connect: {
+              id: ctx.session.user.id,
+            },
+          },
+        },
+      });
+    }),
+
+  // delete todo
+  deleteTodo: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.todo.delete({
+        where: {
+          id: input,
+        },
+      });
+    }),
+
+  // toggle todo on and off
+  toggleTodo: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        done: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.todo.update({
+        where: {
+          id: input.id,
+        },
+        data:{
+          done:input.done
+        }
+      });
+    }),
 });
