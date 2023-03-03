@@ -11,7 +11,6 @@ import { prisma } from "~/server/db";
 
 import EmailProvider from "next-auth/providers/email";
 
-
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -55,25 +54,24 @@ export const authOptions: NextAuthOptions = {
         host: process.env.EMAIL_SERVER || "https://localhost:3000",
         port: 587,
         auth: {
-          user: "apiKey",
-          password: process.env.EMAIL_PASSWORD || "",
-
+          user: "apikey",
+          pass: process.env.EMAIL_API_KEY,
         },
-        from: process.env.EMAIL_FROM || "default@default.com",
-        ...(process.env.NODE_ENV !== "production" ? {
-          sendVerificationRequest({ url }) {
-            console.log("LOGIN LINK", url);
+      },
+      from: process.env.EMAIL_FROM || "default@default.com",
+      ...(process.env.NODE_ENV !== "production"
+        ? {
+            sendVerificationRequest({ url }) {
+              console.log("LOGIN LINK", url);
+            },
           }
-        } : {})
-
-      }
-    })
+        : {}),
+    }),
 
     // DiscordProvider({
     //   clientId: env.DISCORD_CLIENT_ID,
     //   clientSecret: env.DISCORD_CLIENT_SECRET,
     // }),
-
 
     // emailprovider
 
