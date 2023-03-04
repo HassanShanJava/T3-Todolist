@@ -15,7 +15,7 @@ const Todos = () => {
 
   return <div className="">
     {todoList.length>0 ? todoList.map((todo)=>(
-        <Todo key={todo} todo={todo}/>
+        <Todo key={todo.id} todo={todo}/>
     )):"Create your 1st Todo"}
   </div>;
 };
