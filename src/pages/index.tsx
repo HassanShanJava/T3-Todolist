@@ -4,6 +4,8 @@ import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
+import { Session } from "inspector";
+import Todos from "~/component/Todos";
 
 const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -19,6 +21,15 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+          
+          
+          {/* listing of todos */}
+          {sessionData && (
+            <div className="flex flex-col gap-4 rounded-xl bg-white/10 p-4 text-white">
+              <h3 className="text-xl font-bold">Todos</h3>
+              <Todos/>
+            </div>
+          )}
           <div className="flex flex-col items-center gap-2">
             <p className="text-l text-center text-white">
               {sessionData && (
