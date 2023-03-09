@@ -6,6 +6,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { Session } from "inspector";
 import Todos from "~/component/Todos";
+import CreateTodo from "~/component/CreateTodo";
 
 const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
@@ -28,6 +29,7 @@ const Home: NextPage = () => {
             <div className="flex flex-col gap-4 rounded-xl bg-white/10 p-4 text-white">
               <h3 className="text-xl font-bold">Todos</h3>
               <Todos/>
+              <CreateTodo/>
             </div>
           )}
           <div className="flex flex-col items-center gap-2">
