@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { api } from "~/utils/api";
+import { todoInput } from "~/types";
+import { toast } from "react-hot-toast";
 
 const CreateTodo = () => {
 
@@ -10,6 +12,14 @@ const CreateTodo = () => {
       <form className="flex gap-2" onSubmit={(e)=>{
         e.preventDefault()
         // we validate input here
+        const result=todoInput.safeParse(newTodo)
+        if(!result.success){
+            // toast.error("invalid input")
+            toast.error(result.error.format()._errors.join("\n"))
+            return;
+        }
+
+        // here make mutation
 
       }}>
         <input
