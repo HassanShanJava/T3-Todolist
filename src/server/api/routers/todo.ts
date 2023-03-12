@@ -21,31 +21,30 @@ export const todoRouter = createTRPCRouter({
       },
     });
 
-    console.log(
-      todos.map(({ id, text, done }) => ({
-        id,
-        text,
-        done,
-      }))
-    );
 
-    return [
-      {
-        id: "fake",
-        text: "fake",
-        done: false,
-      },
-      {
-        id: "fake2",
-        text: "fake fake2",
-        done: true,
-      },
-      {
-        id: "fake3",
-        text: "fake fake fake3",
-        done: true,
-      },
-    ];
+    return todos.map(({ id, text, done }) => ({
+      id,
+      text,
+      done,
+    }))
+
+    // return [
+    //   {
+    //     id: "fake",
+    //     text: "fake",
+    //     done: false,
+    //   },
+    //   {
+    //     id: "fake2",
+    //     text: "fake fake2",
+    //     done: true,
+    //   },
+    //   {
+    //     id: "fake3",
+    //     text: "fake fake fake3",
+    //     done: true,
+    //   },
+    // ];
   }),
 
   // create todo
@@ -88,8 +87,8 @@ export const todoRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data:{
-          done:input.done
+        data: {
+          done: input.done
         }
       });
     }),
