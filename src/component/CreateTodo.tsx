@@ -13,6 +13,9 @@ const CreateTodo = () => {
     onSettled: async ()=>{
         // this will reloaod the pae when new inputu
         await trpc.todo.getAllTodos.invalidate()
+
+
+        
     }
   });
 
