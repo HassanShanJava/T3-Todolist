@@ -6,17 +6,13 @@ import { toast } from "react-hot-toast";
 const CreateTodo = () => {
   const [newTodo, setNewTodo] = useState("");
 
-
-  const trpc=api.useContext()
+  const trpc = api.useContext();
 
   const { mutate } = api.todo.createTodo.useMutation({
-    onSettled: async ()=>{
-        // this will reloaod the pae when new inputu
-        await trpc.todo.getAllTodos.invalidate()
-
-
-        
-    }
+    onSettled: async () => {
+      // this will reloaod the pae when new inputu
+      await trpc.todo.getAllTodos.invalidate();
+    },
   });
 
   return (
@@ -34,8 +30,7 @@ const CreateTodo = () => {
           }
 
           // here make mutation
-          mutate(newTodo) // works but does not update frontend on creating, need to refetch ->look abovve on onSettled
-
+          mutate(newTodo); // works but does not update frontend on creating, need to refetch ->look abovve on onSettled
         }}
       >
         <input
