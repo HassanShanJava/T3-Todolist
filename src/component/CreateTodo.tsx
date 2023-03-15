@@ -51,6 +51,9 @@ const CreateTodo = () => {
     },
   });
 
+  // now to make optimistic update  for the toggle adn delete
+  
+
   return (
     <div>
       <form
