@@ -23,6 +23,7 @@ const Todo = ({ todo }: TodoProps) => {
   const { mutate: deleteMutation } = api.todo.deleteTodo.useMutation({
     onSettled: async () => {
       await trpc.todo.getAllTodos.invalidate();
+      
     },
   });
 
