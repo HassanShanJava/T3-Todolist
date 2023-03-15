@@ -8,7 +8,43 @@ const CreateTodo = () => {
 
   const trpc = api.useContext();
 
+  //optimistic updates is when u dont wait for when somthing gget back from the server
+  // we update the cache of the response and manully udate the server
+  // we also need to rollback if server fails (not delete or update on failure to client side cache)
+
   const { mutate } = api.todo.createTodo.useMutation({
+    onMutate: async (newTodo) => {
+      // cancel any outside reftech so to prevent overiding
+      await trpc.todo.getAllTodos.cancel();
+
+      // now create snapshot to previous todos
+      const previouTodo = trpc.todo.getAllTodos.getData();
+
+      // now optimistically updae new value
+      trpc.todo.getAllTodos.setData(undefined, (prev) => {
+        // update function
+        const optimisticTodo = {
+          id: "optimistic-id",
+          text: newTodo,
+          done: false,
+        };
+
+        if (!prev) return [optimisticTodo];
+
+        return [...prev, optimisticTodo];
+      });
+
+      // clear inputform
+      setNewTodo("");
+      return { previouTodo };
+    },
+    onError: (err, newTodo, context) => {
+      toast.error("An error occured while creating todo");
+      setNewTodo(newTodo);
+      trpc.todo.getAllTodos.setData(undefined, () => {
+        context?.previouTodo;
+      });
+    },
     onSettled: async () => {
       // this will reloaod the pae when new inputu
       await trpc.todo.getAllTodos.invalidate();

@@ -23,9 +23,13 @@ const Todo = ({ todo }: TodoProps) => {
   const { mutate: deleteMutation } = api.todo.deleteTodo.useMutation({
     onSettled: async () => {
       await trpc.todo.getAllTodos.invalidate();
-      
+
     },
   });
+
+
+
+
 
   return (
     <div className="my-2 flex items-center justify-between gap-2">
