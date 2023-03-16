@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
       server: {
-        host: process.env.EMAIL_SERVER || "https://localhost:3000",
+        host: process.env.EMAIL_SERVER || "https://t3-todolist.netlify.app",
         port: 587,
         auth: {
           user: "apikey",
