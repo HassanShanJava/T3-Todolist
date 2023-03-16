@@ -41,7 +41,7 @@ const CreateTodo = () => {
     onError: (err, newTodo, context) => {
       toast.error("An error occured while creating todo");
       setNewTodo(newTodo);
-      trpc.todo.getAllTodos.setData(undefined, () => {
+      trpc.todo.getAllTodos.setData(undefined, ():any => {
         context?.previouTodo;
       });
     },

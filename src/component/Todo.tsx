@@ -30,7 +30,7 @@ const Todo = ({ todo }: TodoProps) => {
 
         return prev.map((todos, i) => {
           if (todos.id === id) {
-            return ({ ...todos, done });
+            return { ...todos, done };
           }
           return todos;
         });
@@ -38,14 +38,16 @@ const Todo = ({ todo }: TodoProps) => {
 
       return { previouTodo };
     },
-    onSuccess:(err, {done})=>{
-      if(done){
-        toast.success("Well done!")
+    onSuccess: (err, { done }) => {
+      if (done) {
+        toast.success("Well done!");
       }
     },
     onError: (err, newTodo, context) => {
-      toast.error(`An error occured when setting todo to ${done? "done":"undone"}`);
-      trpc.todo.getAllTodos.setData(undefined, () => {
+      toast.error(
+        `An error occured when setting todo to ${done ? "done" : "undone"}`
+      );
+      trpc.todo.getAllTodos.setData(undefined, ():any => {
         context?.previouTodo;
       });
     },
@@ -77,9 +79,12 @@ const Todo = ({ todo }: TodoProps) => {
     },
     onError: (err, newTodo, context) => {
       toast.error("An error occured when deleting todo");
-      trpc.todo.getAllTodos.setData(undefined, () => {
-        context?.previouTodo;
-      });
+      trpc.todo.getAllTodos.setData(
+        undefined,
+        ():any=> {
+          context?.previouTodo;
+        }
+      );
     },
 
     onSettled: async () => {
