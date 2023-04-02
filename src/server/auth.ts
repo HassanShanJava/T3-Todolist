@@ -51,14 +51,14 @@ export const authOptions: NextAuthOptions = {
   providers: [
     EmailProvider({
       server: {
-        host: process.env.EMAIL_SERVER || "https://t3-todolist.netlify.app",
+        host: process.env.EMAIL_SERVER,
         port: 587,
         auth: {
           user: "apikey",
           pass: process.env.EMAIL_API_KEY,
         },
       },
-      from: process.env.EMAIL_FROM || "default@default.com",
+      from: process.env.EMAIL_FROM ,
       ...(process.env.NODE_ENV !== "production"
         ? {
             sendVerificationRequest({ url }) {
